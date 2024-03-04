@@ -1,0 +1,26 @@
+name: Rebase to main to Staging
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  rebase_master_to_staging:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the latest code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Fetch full git history to ensure accurate rebase
+      - name: Setup Git User
+        run: |
+          git config user.name "DenizHyBird"
+          git config user.email "deniz.djekic@hybirdtech.com"
+      - name: Rebase master onto staging
+        run: |
+          git checkout staging
+          git rebase origin/main
+          git push staging --force
+  
