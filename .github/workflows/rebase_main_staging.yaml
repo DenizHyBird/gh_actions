@@ -22,10 +22,15 @@ jobs:
         run: |
           git checkout staging
           git rebase origin/main
-          # Check if there are any conflicts
-        if: failure()
-        then:
-          run: echo "Conflict detected. Resolve conflicts and commit changes." && exit 1
+          if [ $? -ne 0 ]; then
+            echo "Conflict detected. Resolve conflicts and commit changes."
+            exit 1
+          fi
+      - name: Notify failure for rebase
+        if: failure() 
+        run: |
+          echo "Rebase failed. No changes will be pushed."   
       - name: Push changes to staging
+        if: success()
         run: git push -u origin staging --force
   
