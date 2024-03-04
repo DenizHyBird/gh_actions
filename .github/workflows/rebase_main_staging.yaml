@@ -22,5 +22,5 @@ jobs:
         run: |
           git checkout staging
           git rebase origin/main
-          git push staging --force
+          git push -u origin staging --force
   
